@@ -1,7 +1,7 @@
 package fr.insa.microservice.ManagementMissionMs.model;
 
 public class Mission {
-	private static final String [] States = {"En Attente", "Validée", "Refusée", "Terminée"};
+	private static final String [] States = {"En Attente", "Validée", "Réalisé"};
 	
 	private int idmission;
 	private int idDemandeur;
@@ -9,43 +9,24 @@ public class Mission {
 	private String state;
 	private String comment;
 	
+	public Mission() {
+        this.state = States[0];
+    }
+
 	public Mission(int idmission, int idDemandeur ) {
 		this.idmission = idmission;
 		this.idDemandeur = idDemandeur;
 		StateInitiale();
 	}
 
-	public Mission(int idmission, int idDemandeur , int idBenevole,int state,String comment ) {
+	public Mission(int idmission, int idDemandeur , int idBenevole,String state,String comment ) {
 		this.idmission = idmission;
 		this.idDemandeur = idDemandeur;
         this.idBenevole=idBenevole;
 		this.comment=comment;
-		setStateByNumber(state);
+		this.state=state;
 	}
 	
-	public void setStateByNumber(int stateNumber) {
-		if (stateNumber >= 0 && stateNumber < States.length) {
-			this.state = States[stateNumber];
-		} else {
-			throw new IllegalArgumentException("Numéro d'état invalide : " + stateNumber);
-		}
-	}
-
-	public int getStateNumber() {
-		switch (getState()) {
-			case "En Attente":
-				return 0;
-			case "Validée":
-				return 1;
-			case "Refusée":
-				return 2; 
-			case "Terminée":
-				return 3; 
-			default:
-				break;
-		}
-		return 0;
-	}
 
 	public int getIdmission() {
 		return idmission;

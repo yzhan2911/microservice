@@ -31,7 +31,7 @@ public class managementMissionSQL {
                         resultSet.getInt("idmission"),
                         resultSet.getInt("idDemandeur"),
                         resultSet.getInt("idBenevole"),
-                        resultSet.getInt("state"),
+                        resultSet.getString("state"),
                         resultSet.getString("comment")
                 );
                 missions.add(mission);
@@ -61,7 +61,7 @@ public class managementMissionSQL {
                         resultSet.getInt("idmission"),
                         resultSet.getInt("idDemandeur"),
                         resultSet.getInt("idBenevole"),
-                        resultSet.getInt("state"),
+                        resultSet.getString("state"),
                         resultSet.getString("comment")
                 );
             }
@@ -74,15 +74,13 @@ public class managementMissionSQL {
 
 
     public static void addMission(Mission mission) {
-        String query = "INSERT INTO Mission (idDemandeur, idBenevole, state, comment) VALUES (?, ?, ?, ?)";
+        String query = "INSERT INTO Mission (idmission,idDemandeur,state) VALUES (?, ?,'En Attente')";
         ConnectionJavaMySQL connectionManager = new ConnectionJavaMySQL();
         Connection connection = connectionManager.getConnection();
         try (
             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-            preparedStatement.setInt(1, mission.getIdDemandeur());
-            preparedStatement.setInt(2, mission.getIdBenevole());
-            preparedStatement.setInt(3, mission.getStateNumber());
-            preparedStatement.setString(4, mission.getComment());
+            preparedStatement.setInt(1, mission.getIdmission()); 
+            preparedStatement.setInt(2, mission.getIdDemandeur());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -105,7 +103,7 @@ public static void deleteMission(int idMission) {
 
 
 public static void assignMission(int idMission, int idBenevole) {
-    String query = "UPDATE Mission SET idBenevole = ?, state = 1 WHERE idmission = ?";
+    String query = "UPDATE Mission SET idBenevole = ?, state = 'Validée' WHERE idmission = ?";
     ConnectionJavaMySQL connectionManager = new ConnectionJavaMySQL();
     Connection connection = connectionManager.getConnection();
     try (
