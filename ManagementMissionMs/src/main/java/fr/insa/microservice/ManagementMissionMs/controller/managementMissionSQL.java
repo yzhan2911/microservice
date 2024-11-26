@@ -1,4 +1,4 @@
-package main.java.fr.insa.microservice.ManagementMissionMs.controller;
+package fr.insa.microservice.ManagementMissionMs.controller;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -8,13 +8,18 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import main.java.fr.insa.microservice.ManagementMissionMs.model.ConnectionJavaMySQL;
+import java.sql.Statement;
+
+import fr.insa.microservice.ManagementMissionMs.model.ConnectionJavaMySQL;
+import fr.insa.microservice.ManagementMissionMs.model.Mission;
+
 
 public class managementMissionSQL {
 
  public static List<Mission> getAllMission() {
         List<Mission> missions = new ArrayList<>();
         String query = "SELECT * FROM Mission";
+        ConnectionJavaMySQL connectionManager = new ConnectionJavaMySQL();
         Connection connection = connectionManager.getConnection();
 
         try (
@@ -43,6 +48,7 @@ public class managementMissionSQL {
     public static Mission getMissionById(int idMission) {
         Mission mission = null;
         String query = "SELECT * FROM Mission WHERE idmission = ?";
+        ConnectionJavaMySQL connectionManager = new ConnectionJavaMySQL();
         Connection connection = connectionManager.getConnection();
 
         try (
@@ -69,12 +75,13 @@ public class managementMissionSQL {
 
     public static void addMission(Mission mission) {
         String query = "INSERT INTO Mission (idDemandeur, idBenevole, state, comment) VALUES (?, ?, ?, ?)";
+        ConnectionJavaMySQL connectionManager = new ConnectionJavaMySQL();
         Connection connection = connectionManager.getConnection();
         try (
             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setInt(1, mission.getIdDemandeur());
             preparedStatement.setInt(2, mission.getIdBenevole());
-            preparedStatement.setInt(3, mission.getState());
+            preparedStatement.setInt(3, mission.getStateNumber());
             preparedStatement.setString(4, mission.getComment());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
@@ -84,22 +91,23 @@ public class managementMissionSQL {
 
 public static void deleteMission(int idMission) {
   ConnectionJavaMySQL connectionManager = new ConnectionJavaMySQL();
-      Connection connection = connectionManager.getConnection();
-      try (
-          Statement statement = connection.createStatement()) {
-          statement.execute("Delete from Mission WHERE idmission = ?"+ idMission + "'");
-          statement.close();
-          connection.close();
-      }catch(SQLException e){
-          e.printStackTrace();
-      }
+    Connection connection = connectionManager.getConnection();
+    try (
+        Statement statement = connection.createStatement()) {
+        statement.execute("Delete from Mission WHERE idmission = ?"+ idMission + "'");
+        statement.close();
+        connection.close();
+    }catch(SQLException e){
+        e.printStackTrace();
+    }
 }
 
 
 public static void assignMission(int idMission, int idBenevole) {
     String query = "UPDATE Mission SET idBenevole = ?, state = 1 WHERE idmission = ?";
-
-    try (Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+    ConnectionJavaMySQL connectionManager = new ConnectionJavaMySQL();
+    Connection connection = connectionManager.getConnection();
+    try (
          PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
         preparedStatement.setInt(1, idBenevole);

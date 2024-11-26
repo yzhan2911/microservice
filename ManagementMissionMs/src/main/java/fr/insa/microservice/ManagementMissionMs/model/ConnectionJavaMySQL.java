@@ -1,13 +1,11 @@
 // Source code is decompiled from a .class file using FernFlower decompiler.
-package main.java.fr.insa.microservice.ManagementMissionMs.model;
+package fr.insa.microservice.ManagementMissionMs.model;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class ConnectionJavaMySQL {
-   public ConnectionJavaMySQL() {
-   }
 
    public Connection getConnection() {
       try {

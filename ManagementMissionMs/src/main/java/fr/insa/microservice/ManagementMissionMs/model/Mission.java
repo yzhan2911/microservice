@@ -1,4 +1,4 @@
-package main.java.fr.insa.microservice.ManagementMissionMs.Model;
+package fr.insa.microservice.ManagementMissionMs.model;
 
 public class Mission {
 	private String [] States = {"En Attente", "Validée", "Refusée", "Terminée"};
@@ -13,6 +13,29 @@ public class Mission {
 		this.idDemandeur = idDemandeur;
         this.idBenevole=idBenevole;
 		StateInitiale();
+	}
+
+	public Mission(int idmission, int idDemandeur , int idBenevole,int state,String comment ) {
+		this.idmission = idmission;
+		this.idDemandeur = idDemandeur;
+        this.idBenevole=idBenevole;
+		this.comment=comment;
+		switch (state) {
+			case 0:
+				StateInitiale();
+				break;
+			case 1:
+				StateValide();
+				break;
+			case 2:
+				StateRefuse();
+				break;
+			case 3:
+				StateTermine();
+				break;
+			default:
+				break;
+		}
 	}
 	
 	public int getIdmission() {
@@ -53,5 +76,21 @@ public class Mission {
 	}
 	public void setComment(String comment) {
 		this.comment = comment;
+	}
+
+	public int getStateNumber() {
+		switch (getState()) {
+			case "En Attente":
+				return 0;
+			case "Validée":
+				return 1;
+			case "Refusée":
+				return 2; 
+			case "Terminée":
+				return 3; 
+			default:
+				break;
+		}
+		return 0;
 	}
 }
