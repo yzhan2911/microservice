@@ -69,7 +69,6 @@ public class PersonnesControllerSQL {
       try (
           Statement statement = connection.createStatement()) {
           statement.execute(" Delete from Personne where id = '"+ idPersonne + "'");
-          // System.out.println(id + "bien supprime au tableau de personne");
           statement.close();
           connection.close();
       }catch(SQLException e1){
