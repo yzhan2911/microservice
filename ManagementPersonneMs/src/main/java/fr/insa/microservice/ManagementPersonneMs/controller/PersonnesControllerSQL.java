@@ -12,7 +12,7 @@ import fr.insa.microservice.ManagementPersonneMs.model.Personne;
 
 public class PersonnesControllerSQL {
 
-    public static List<Personne> getAllPersonnes() {
+    public  List<Personne> getAllPersonnes() {
         List<Personne> personnes = new ArrayList<>();
         ConnectionJavaMySQL connectionManager = new ConnectionJavaMySQL();
         Connection connection = connectionManager.getConnection();
@@ -41,7 +41,7 @@ public class PersonnesControllerSQL {
     }
 
 
-  public static void ajoutPersonne(Personne P){
+  public  void ajoutPersonne(Personne P){
       int id=P.getId();
       String nom=P.getNom();
       String prenom=P.getPrenom();
@@ -60,7 +60,7 @@ public class PersonnesControllerSQL {
              
   }
 
-  public static void supprimerPersonne(int idPersonne ) {
+  public  void supprimerPersonne(int idPersonne ) {
     ConnectionJavaMySQL connectionManager = new ConnectionJavaMySQL();
       Connection connection = connectionManager.getConnection();
       try (
@@ -76,7 +76,7 @@ public class PersonnesControllerSQL {
   }
 
 
-  public static Personne getPersonneById(int idPersonne) {
+  public  Personne getPersonneById(int idPersonne) {
     ConnectionJavaMySQL connectionManager = new ConnectionJavaMySQL();
     Connection connection = connectionManager.getConnection();
     Personne personne = null;
@@ -107,7 +107,7 @@ public class PersonnesControllerSQL {
 
 
 
-public static void setRole(int idPersonne,int role) {
+public  void setRole(int idPersonne,int role) {
     ConnectionJavaMySQL connectionManager = new ConnectionJavaMySQL();
     Connection connection = connectionManager.getConnection();
 
@@ -125,7 +125,7 @@ public static void setRole(int idPersonne,int role) {
             break;
         default:
             System.out.println("Rôle non valide : " + role);
-            return; // Arrête l'exécution si le rôle est invalide
+            return; 
     }
     try (
         Statement statement = connection.createStatement()) {
