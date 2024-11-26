@@ -5,13 +5,15 @@ public class Personne {
 	private String nom;
 	private String prenom;
 	private int age;
+	private int role;
 	
 	
-	public Personne(int id, String nom, String prenom, int age) {
+	public Personne(int id, String nom, String prenom, int age,int role) {
 		this.id = id;
 		this.nom = nom;
 		this.prenom = prenom;
 		this.age = age;
+		this.role= 0;
 	}
 	
 	public int getId() {
