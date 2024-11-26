@@ -90,13 +90,14 @@ public class managementMissionSQL {
     }
 
 public static void deleteMission(int idMission) {
-  ConnectionJavaMySQL connectionManager = new ConnectionJavaMySQL();
+   
+    ConnectionJavaMySQL connectionManager = new ConnectionJavaMySQL();
     Connection connection = connectionManager.getConnection();
-    try (
-        Statement statement = connection.createStatement()) {
-        statement.execute("Delete from Mission WHERE idmission = ?"+ idMission + "'");
-        statement.close();
-        connection.close();
+    String query = "DELETE FROM Mission WHERE idmission = ?";
+    
+    try ( PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+        preparedStatement.setInt(1, idMission);
+        preparedStatement.executeUpdate();
     }catch(SQLException e){
         e.printStackTrace();
     }

@@ -1,17 +1,17 @@
 package fr.insa.microservice.ManagementMissionMs.model;
 
 public class Mission {
-	private String [] States = {"En Attente", "Validée", "Refusée", "Terminée"};
+	private static final String [] States = {"En Attente", "Validée", "Refusée", "Terminée"};
+	
 	private int idmission;
 	private int idDemandeur;
     private int idBenevole;
 	private String state;
 	private String comment;
 	
-	public Mission(int idmission, int idDemandeur , int idBenevole ) {
+	public Mission(int idmission, int idDemandeur ) {
 		this.idmission = idmission;
 		this.idDemandeur = idDemandeur;
-        this.idBenevole=idBenevole;
 		StateInitiale();
 	}
 
@@ -20,24 +20,33 @@ public class Mission {
 		this.idDemandeur = idDemandeur;
         this.idBenevole=idBenevole;
 		this.comment=comment;
-		switch (state) {
-			case 0:
-				StateInitiale();
-				break;
-			case 1:
-				StateValide();
-				break;
-			case 2:
-				StateRefuse();
-				break;
-			case 3:
-				StateTermine();
-				break;
+		setStateByNumber(state);
+	}
+	
+	public void setStateByNumber(int stateNumber) {
+		if (stateNumber >= 0 && stateNumber < States.length) {
+			this.state = States[stateNumber];
+		} else {
+			throw new IllegalArgumentException("Numéro d'état invalide : " + stateNumber);
+		}
+	}
+
+	public int getStateNumber() {
+		switch (getState()) {
+			case "En Attente":
+				return 0;
+			case "Validée":
+				return 1;
+			case "Refusée":
+				return 2; 
+			case "Terminée":
+				return 3; 
 			default:
 				break;
 		}
+		return 0;
 	}
-	
+
 	public int getIdmission() {
 		return idmission;
 	}
@@ -78,19 +87,5 @@ public class Mission {
 		this.comment = comment;
 	}
 
-	public int getStateNumber() {
-		switch (getState()) {
-			case "En Attente":
-				return 0;
-			case "Validée":
-				return 1;
-			case "Refusée":
-				return 2; 
-			case "Terminée":
-				return 3; 
-			default:
-				break;
-		}
-		return 0;
-	}
+	
 }

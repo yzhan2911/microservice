@@ -29,13 +29,15 @@ public class MissionRessources {
 		return managementMissionSQL.getMissionById(id);
 	} 
 
+	//idMission et idDemandeur sont suffit
     @PostMapping
 	public Mission addMission(@RequestBody Mission m) {
+		System.out.println("Mission reçue : " + m);
 		managementMissionSQL.addMission(m);
 		return m;
 	}
 
-    @DeleteMapping(value = "/delete/{id}")
+    @DeleteMapping(value = "/delete/{idMission}")
 	public void deletePersonne(@PathVariable int idMission) {
         managementMissionSQL.deleteMission(idMission);
 	}
