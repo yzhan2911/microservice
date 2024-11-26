@@ -1,5 +1,7 @@
 package fr.insa.microservice.ManagementPersonneMs.model;
 
+
+@XmlRootElement(name="Personne")
 public class Personne {
 	private int id;
 	private String nom;
