@@ -103,7 +103,7 @@ public static void deleteMission(int idMission) {
 
 
 public static void assignMission(int idMission, int idBenevole) {
-    String query = "UPDATE Mission SET idBenevole = ?, state = 'Validée' WHERE idmission = ?";
+    String query = "UPDATE Mission SET idBenevole = ? WHERE idmission = ?";
     ConnectionJavaMySQL connectionManager = new ConnectionJavaMySQL();
     Connection connection = connectionManager.getConnection();
     try (
