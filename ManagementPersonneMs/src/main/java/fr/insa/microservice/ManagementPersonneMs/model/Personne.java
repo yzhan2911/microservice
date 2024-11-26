@@ -1,7 +1,6 @@
 package fr.insa.microservice.ManagementPersonneMs.model;
 
 
-@XmlRootElement(name="Personne")
 public class Personne {
 	private int id;
 	private String nom;
@@ -15,11 +14,26 @@ public class Personne {
 		this.nom = nom;
 		this.prenom = prenom;
 		this.age = age;
+		this.role= role;
+	}
+	public Personne(int id, String nom, String prenom, int age) {
+		this.id = id;
+		this.nom = nom;
+		this.prenom = prenom;
+		this.age = age;
 		this.role= 0;
 	}
 	
 	public int getId() {
 		return id;
+	}
+	
+	public int getRole() {
+		return role;
+	}
+	
+	public void setRole(int role) {
+		this.role=role;
 	}
 	
 	public void setId(int id) {
