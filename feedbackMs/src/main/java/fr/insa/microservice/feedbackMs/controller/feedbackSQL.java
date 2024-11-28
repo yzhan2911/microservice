@@ -4,6 +4,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.sql.Connection;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,29 +19,37 @@ import fr.insa.microservice.feedbackMs.model.feedback;
 public class feedbackSQL {
 
     public static List<feedback> getAllComments() {
-        List<feedback> comments = new ArrayList<>();
-        String query = "SELECT * FROM Comment";
+        List<feedback> feedbacks = new ArrayList<>();
+        String query = """
+                SELECT idmission, GROUP_CONCAT(comment SEPARATOR ', ') AS comments
+                FROM Comment
+                GROUP BY idmission
+                """;
         ConnectionJavaMySQL connectionManager = new ConnectionJavaMySQL();
         Connection connection = connectionManager.getConnection();
 
         try (Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(query)) {
-            while (resultSet.next()) {
-                feedback feedback = new feedback(
-                    resultSet.getInt("idmission"), 
-                    resultSet.getString("comment") 
-                );
-                comments.add(feedback);
-            }
+        	 while (resultSet.next()) {
+                 int idMission = resultSet.getInt("idmission");
+                 String comments = resultSet.getString("comments");
+
+                 // Convert comments string into a List<String>
+                 List<String> commentList = Arrays.asList(comments.split(", "));
+
+                 // Add the feedback object
+                 feedback feedback = new feedback(idMission, commentList);
+                 feedbacks.add(feedback);
+             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return comments;
+        return feedbacks;
     }
 
 
     public static void valideMission(int idMission) {
-        String query = "UPDATE Feedback SET status = 'Validée' WHERE idMission = ?";
+        String query = "UPDATE Mission SET state = 'Validée' WHERE idMission = ?";
         ConnectionJavaMySQL connectionManager = new ConnectionJavaMySQL();
         Connection connection = connectionManager.getConnection();
         try ( PreparedStatement preparedStatement = connection.prepareStatement(query))  {

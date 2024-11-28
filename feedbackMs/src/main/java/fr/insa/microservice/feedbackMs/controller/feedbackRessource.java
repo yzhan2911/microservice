@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
@@ -29,13 +28,13 @@ public class feedbackRessource {
         feedbackSQL.valideMission(idMission);
 	}
 
-    @PutMapping(value="refuse/{idMission}")
-    public void refuseMission(@PathVariable int idMission,@RequestBody String comment) {
+    @PutMapping(value="refuse/{idMission}/{comment}")
+    public void refuseMission(@PathVariable int idMission,@PathVariable String comment) {
         feedbackSQL.refuseMission(idMission,comment);
 	}
 
-    @PutMapping(value="setAvis/{idMission}")
-    public void setAvis(@PathVariable int idMission,@RequestBody String comment) {
+    @PutMapping(value="setAvis/{idMission}/{comment}")
+    public void setAvis(@PathVariable int idMission,@PathVariable String comment) {
         feedbackSQL.setAvis(idMission,comment);
 	}
 }
