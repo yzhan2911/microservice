@@ -3,11 +3,7 @@ package fr.insa.microservice.feedbackMs.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 import fr.insa.microservice.feedbackMs.model.feedback;
@@ -24,17 +20,18 @@ public class feedbackRessource {
 	}
 
     @PutMapping(value="valide/{idMission}")
-    public void valideMission(@PathVariable int idMission) {
+    public String valideMission(@PathVariable int idMission) {
         feedbackSQL.valideMission(idMission);
+        return "Mission "+idMission+" a été validé";
 	}
 
     @PutMapping(value="refuse/{idMission}/{comment}")
-    public void refuseMission(@PathVariable int idMission,@PathVariable String comment) {
-        feedbackSQL.refuseMission(idMission,comment);
+    public feedback refuseMission(@PathVariable int idMission,@PathVariable String comment) {
+        return feedbackSQL.refuseMission(idMission,comment);
 	}
 
     @PutMapping(value="setAvis/{idMission}/{comment}")
-    public void setAvis(@PathVariable int idMission,@PathVariable String comment) {
-        feedbackSQL.setAvis(idMission,comment);
+    public feedback setAvis(@PathVariable int idMission,@PathVariable String comment) {
+        return feedbackSQL.setAvis(idMission,comment);
 	}
 }

@@ -60,7 +60,7 @@ public class feedbackSQL {
         }
     }
 
-    public static void refuseMission(int idMission,String comment) {
+    public static feedback refuseMission(int idMission,String comment) {
         String updateMissionQuery = "UPDATE Mission SET state = 'Refusée' WHERE idmission = ?";
         String insertCommentQuery = "INSERT INTO Comment (idmission, comment) VALUES (?, ?)";
         ConnectionJavaMySQL connectionManager = new ConnectionJavaMySQL();
@@ -75,12 +75,16 @@ public class feedbackSQL {
                     insertCommentStmt.setString(2, comment);
                     insertCommentStmt.executeUpdate();
                 }
+                List<String> comments = new ArrayList<>();
+                comments.add(comment);
+                return new feedback(idMission,comments);
             } catch (SQLException e) {
                 e.printStackTrace();
+                return null;
         }
     }
     
-    public static void setAvis(int idMission,String comment) {
+    public static feedback setAvis(int idMission,String comment) {
         String updateMissionQuery = "UPDATE Mission SET state = 'Réalisée' WHERE idmission = ?";
         String insertCommentQuery = "INSERT INTO Comment (idmission, comment) VALUES (?, ?)";
         ConnectionJavaMySQL connectionManager = new ConnectionJavaMySQL();
@@ -95,8 +99,12 @@ public class feedbackSQL {
                 insertCommentStmt.setString(2, comment);
                 insertCommentStmt.executeUpdate();
             }
+            List<String> comments = new ArrayList<>();
+            comments.add(comment);
+            return new feedback(idMission,comments);
             } catch (SQLException e) {
                 e.printStackTrace();
+                return null;
         }
     }
 }
