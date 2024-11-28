@@ -113,22 +113,12 @@ public  void setRole(int idPersonne,int role) {
     ConnectionJavaMySQL connectionManager = new ConnectionJavaMySQL();
     Connection connection = connectionManager.getConnection();
 
-    String query = null;
-
-    switch (role) {
-        case 1:
-            query = "UPDATE Personne SET role = 1 WHERE id = " + idPersonne;
-            break;
-        case 2:
-            query = "UPDATE Personne SET role = 2 WHERE id = " + idPersonne;
-            break;
-        case 3:
-            query = "UPDATE Personne SET role = 3, age = NULL WHERE id = " + idPersonne;
-            break;
-        default:
-            System.out.println("Rôle non valide : " + role);
-            return; 
+    if (role < 1 || role > 3) {
+        System.out.println("Rôle non valide : " + role);
+        return;
     }
+
+    String query = "UPDATE Personne SET role = " + role + " WHERE id = " + idPersonne;
     try (
         Statement statement = connection.createStatement()) {
         int rowsUpdated = statement.executeUpdate(query);

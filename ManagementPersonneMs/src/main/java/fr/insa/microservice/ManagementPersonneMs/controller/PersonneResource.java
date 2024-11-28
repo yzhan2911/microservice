@@ -68,8 +68,8 @@ public class PersonneResource {
 		return personneControlle.getAllValideurs();
 	}
 	
-	@PutMapping(value = "/setRole/{id}")
-	public void setRole(@PathVariable int id,@RequestBody String role) {
+	@PutMapping(value = "/setRole/{id}/{role}")
+	public Personne setRole(@PathVariable int id,@PathVariable String role) {
 		switch (role) {
         case "demandeur":
         	 personneControlle.setRole(id, 1);
@@ -82,10 +82,10 @@ public class PersonneResource {
             break;
         default:
             System.out.println("Rôle non valide : " + role);
-            return; 
+            return personneControlle.getPersonneById(id);  
     }
+		return personneControlle.getPersonneById(id);
 		
-		 personneControlle.setRole(id, 3);
 	}
 	
 
