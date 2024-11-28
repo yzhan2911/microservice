@@ -39,7 +39,7 @@ public class Mission {
 	public void setIdmission(int idmission) {
 		this.idmission = idmission;
 	}
-	public int getIdBenevole() {
+	public Integer getIdBenevole() {
         return idBenevole;
     }
     public void setIdBenevole(int idBenevole) {

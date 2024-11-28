@@ -3,15 +3,7 @@ package fr.insa.microservice.ManagementMissionMs.controller;
 
 import java.util.List;
 
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
+import org.springframework.web.bind.annotation.*;
 import fr.insa.microservice.ManagementMissionMs.model.Mission;
 
 
@@ -24,9 +16,9 @@ public class MissionRessources {
 		return managementMissionSQL.getAllMission();
 	}
 
-    @GetMapping(value = "/{id}")
-	public Mission getMissionById(@PathVariable int id) {
-		return managementMissionSQL.getMissionById(id);
+    @GetMapping(value = "/{idMission}")
+	public Mission getMissionById(@PathVariable int idMission) {
+		return managementMissionSQL.getMissionById(idMission);
 	} 
 
 	//idMission , idDemandeur et description sont suffit
@@ -37,14 +29,24 @@ public class MissionRessources {
 	}
 
     @DeleteMapping(value = "/delete/{idMission}")
-	public void deleteMission(@PathVariable int idMission) {
-        managementMissionSQL.deleteMission(idMission);
+	public String deleteMission(@PathVariable int idMission) {
+        boolean isDeleted = managementMissionSQL.deleteMission(idMission);
+		if (isDeleted) {
+			return "La mission avec ID " + idMission + " a été supprimée avec succès.";
+		} else {
+			return "Échec de la suppression. Aucune mission avec ID " + idMission + " n'a été trouvée.";
+		}
 	}
 
 
     @PutMapping(value="assign/{idMission}/{idBenevole}")
-    public void assignMission(@PathVariable int idMission,@PathVariable int idBenevole) {
-        managementMissionSQL.assignMission(idMission,idBenevole);
+    public String assignMission(@PathVariable int idMission,@PathVariable int idBenevole) {
+        boolean isAssigned =  managementMissionSQL.assignMission(idMission,idBenevole);
+		if (isAssigned) {
+			return "La mission avec ID " + idMission + " a été assigné à bénévole "+idBenevole+".";
+		} else {
+			return "Assignement échec !";
+		}
 	}
 
 }

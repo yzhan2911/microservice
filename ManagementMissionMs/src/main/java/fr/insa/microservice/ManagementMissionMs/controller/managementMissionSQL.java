@@ -116,7 +116,7 @@ public class managementMissionSQL {
 
 
     public static void addMission(Mission mission) {
-        String query = "INSERT INTO Mission (idmission,idDemandeur,description,state) VALUES (?, ?,?,'En Attente')";
+        String query = "INSERT INTO Mission (idmission, idDemandeur, description, state) VALUES (?, ?, ?, 'En Attente')";
         ConnectionJavaMySQL connectionManager = new ConnectionJavaMySQL();
         Connection connection = connectionManager.getConnection();
         try (
@@ -130,41 +130,44 @@ public class managementMissionSQL {
         }
     }
 
-    public static void deleteMission(int idMission) {
+    public static boolean deleteMission(int idMission) {
         ConnectionJavaMySQL connectionManager = new ConnectionJavaMySQL();
         Connection connection = connectionManager.getConnection();
         String query1 = "DELETE FROM Mission WHERE idmission = ?";
         String query2 = "DELETE FROM Comment WHERE idmission = ?";
-        
+        int rowsAffectedMission = 0;
         try {
             try(PreparedStatement preparedStatement2 = connection.prepareStatement(query2))
             { preparedStatement2.setInt(1, idMission);
-                preparedStatement2.executeUpdate();    
+              preparedStatement2.executeUpdate();    
             }
             try(PreparedStatement preparedStatement1 = connection.prepareStatement(query1))
             { preparedStatement1.setInt(1, idMission);
-                preparedStatement1.executeUpdate();
+                rowsAffectedMission = preparedStatement1.executeUpdate();
             }
-           
+            return rowsAffectedMission > 0;
         }catch(SQLException e){
             e.printStackTrace();
+            return false;
         }
     }
 
 
-public static void assignMission(int idMission, int idBenevole) {
+public static boolean assignMission(int idMission, int idBenevole) {
     String query = "UPDATE Mission SET idBenevole = ? WHERE idmission = ?";
     ConnectionJavaMySQL connectionManager = new ConnectionJavaMySQL();
     Connection connection = connectionManager.getConnection();
+    int rowsAffected = 0;
     try (
          PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
         preparedStatement.setInt(1, idBenevole);
         preparedStatement.setInt(2, idMission);
-        preparedStatement.executeUpdate();
-
+        rowsAffected=preparedStatement.executeUpdate();
+        return rowsAffected>0;
     } catch (SQLException e) {
         e.printStackTrace();
+        return false;
     }
 }
 }
