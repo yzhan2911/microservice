@@ -9,13 +9,11 @@ public class clientConfigRessource {
 	@Value("${server.port}")
 	private String serverPort;
 	@Value("${db.connection}")
-	private String typeConnectionDeDB;
-	@Value("${db.host}")
-	private String dbHost;
-	@Value("${db.port}")
-	private String dbPort;
+	private String connection;
+	@Value("${db.username}")
+	private String username;
 	@GetMapping("/information")
 	public String getAll() {
-		return "serverPort:"+serverPort+"\n"+"typeConnectionDeDB :"+typeConnectionDeDB+"\n"+"dbHost:"+"dbHost"+"\n"+"dbPort:"+dbPort;
+		return "serverPort:"+serverPort+"\n"+"connection :"+connection+"\n"+"dbusername:"+"dbusername"+"\n";
 	}
 }
