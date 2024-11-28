@@ -1,4 +1,4 @@
-package fr.insa.microservice.serverConfig.ConfigClientMSPersonne;
+package fr.insa.microservice.serverConfig.ConfigClientMSPersonne.resources;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
