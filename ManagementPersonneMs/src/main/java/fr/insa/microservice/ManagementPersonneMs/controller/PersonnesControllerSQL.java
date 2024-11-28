@@ -4,6 +4,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -30,7 +31,7 @@ public class PersonnesControllerSQL {
                 String nom = resultSet.getString("nom");
                 String prenom = resultSet.getString("prenom");
                 int age = resultSet.getInt("age");
-                int role = resultSet.getInt("role"); 
+                String role = resultSet.getString("role"); 
                 Personne personne = new Personne(id, nom, prenom, age,role);
                 personnes.add(personne);
             }
@@ -50,7 +51,7 @@ public class PersonnesControllerSQL {
       String nom=P.getNom();
       String prenom=P.getPrenom();
       int age=P.getAge();
-      int role=P.getRole();
+      String role=P.getRole();
       ConnectionJavaMySQL connectionManager = new ConnectionJavaMySQL();
       Connection connection = connectionManager.getConnection();
       try (
@@ -63,17 +64,18 @@ public class PersonnesControllerSQL {
       }     
   }
   
-  public  void supprimerPersonne(int idPersonne ) {
+  public  boolean supprimerPersonne(int idPersonne ) {
     ConnectionJavaMySQL connectionManager = new ConnectionJavaMySQL();
-      Connection connection = connectionManager.getConnection();
-      try (
-          Statement statement = connection.createStatement()) {
-          statement.execute(" Delete from Personne where id = '"+ idPersonne + "'");
-          statement.close();
-          connection.close();
-      }catch(SQLException e1){
-          e1.printStackTrace();
-      }
+    Connection connection = connectionManager.getConnection();
+    String query = "DELETE FROM Personne WHERE id = ?";
+    try ( PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+        preparedStatement.setInt(1, idPersonne);
+        int rowsAffected = preparedStatement.executeUpdate();
+        return rowsAffected > 0;
+    }catch(SQLException e1){
+        e1.printStackTrace();
+        return false;
+    }
              
   }
 
@@ -93,7 +95,7 @@ public class PersonnesControllerSQL {
             String nom = resultSet.getString("nom");
             String prenom = resultSet.getString("prenom");
             int age = resultSet.getInt("age");
-            int role = resultSet.getInt("role");
+            String role = resultSet.getString("role");
             personne = new Personne(id, nom, prenom, age, role);
         }
 
@@ -109,28 +111,22 @@ public class PersonnesControllerSQL {
 
 
 
-public  void setRole(int idPersonne,int role) {
+public  void setRole(int idPersonne,String role) {
     ConnectionJavaMySQL connectionManager = new ConnectionJavaMySQL();
     Connection connection = connectionManager.getConnection();
-
-    if (role < 1 || role > 3) {
-        System.out.println("Rôle non valide : " + role);
-        return;
-    }
-
-    String query = "UPDATE Personne SET role = " + role + " WHERE id = " + idPersonne;
+    String query = "UPDATE Personne SET role = ? WHERE id = ?";
+     
     try (
-        Statement statement = connection.createStatement()) {
-        int rowsUpdated = statement.executeUpdate(query);
+        PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, role);
+            preparedStatement.setInt(2, idPersonne);
+            int rowsUpdated = preparedStatement.executeUpdate();
 
         if (rowsUpdated > 0) {
             System.out.println("Le rôle de la personne avec l'ID " + idPersonne + " a été mis à jour.");
         } else {
             System.out.println("Aucune personne trouvée avec l'ID " + idPersonne + ".");
         }
-
-        statement.close();
-        connection.close();
     } catch (SQLException e) {
         e.printStackTrace();
     }
@@ -144,7 +140,7 @@ public  List<Demandeur> getAllDemandeurs() {
      
      try (
          Statement statement = connection.createStatement()) {
-         String query = "SELECT * FROM Personne where role = 1";
+         String query = "SELECT * FROM Personne where role = 'Demandeur'";
          ResultSet resultSet = statement.executeQuery(query);
          
          while (resultSet.next()) {
@@ -152,7 +148,7 @@ public  List<Demandeur> getAllDemandeurs() {
              String nom = resultSet.getString("nom");
              String prenom = resultSet.getString("prenom");
              int age = resultSet.getInt("age");
-             int role = resultSet.getInt("role"); 
+             String role = resultSet.getString("role"); 
              Demandeur demandeur = new Demandeur(id, nom, prenom, age,role);
              Demandeurs.add(demandeur);
          }
@@ -172,7 +168,7 @@ public  List<Benevole> getAllBenevoles() {
     
     try (
         Statement statement = connection.createStatement()) {
-        String query = "SELECT * FROM Personne where role = 2";
+        String query = "SELECT * FROM Personne where role = 'Bénévole'";
         ResultSet resultSet = statement.executeQuery(query);
         
         while (resultSet.next()) {
@@ -180,7 +176,7 @@ public  List<Benevole> getAllBenevoles() {
             String nom = resultSet.getString("nom");
             String prenom = resultSet.getString("prenom");
             int age = resultSet.getInt("age");
-            int role = resultSet.getInt("role"); 
+            String role = resultSet.getString("role"); 
             Benevole benevole = new Benevole(id, nom, prenom, age,role);
             Benevoles.add(benevole);
         }
@@ -200,7 +196,7 @@ public  List<Valideur> getAllValideurs() {
     
     try (
         Statement statement = connection.createStatement()) {
-        String query = "SELECT * FROM Personne where role = 3";
+        String query = "SELECT * FROM Personne where role = 'Valideur'";
         ResultSet resultSet = statement.executeQuery(query);
         
         while (resultSet.next()) {
@@ -208,7 +204,7 @@ public  List<Valideur> getAllValideurs() {
             String nom = resultSet.getString("nom");
             String prenom = resultSet.getString("prenom");
             int age = resultSet.getInt("age");
-            int role = resultSet.getInt("role"); 
+            String role = resultSet.getString("role"); 
             Valideur valideur = new Valideur(id, nom, prenom, age,role);
             Valideurs.add(valideur);
         }

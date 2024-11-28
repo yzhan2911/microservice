@@ -2,9 +2,9 @@ package fr.insa.microservice.ManagementPersonneMs.model;
 
 public class Demandeur extends Personne{
 	 
-	public Demandeur(int id, String nom, String prenom, int age,int role) {
+	public Demandeur(int id, String nom, String prenom, int age,String role) {
 		super(id, nom, prenom, age,role);
-		role=1;
+		role="Demandeur";
 	}
 	public Demandeur() {
 		super();

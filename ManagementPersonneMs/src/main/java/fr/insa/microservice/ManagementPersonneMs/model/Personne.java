@@ -1,38 +1,38 @@
 package fr.insa.microservice.ManagementPersonneMs.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Personne {
-	private int id;
+	@JsonProperty("id")
+	private Integer id;
+	@JsonProperty("nom")
 	private String nom;
+	@JsonProperty("prenom")
 	private String prenom;
-	private int age;
-	private int role;
+	@JsonProperty("age")
+	private Integer age;
+	@JsonProperty("role")
+	private String role;
 	
 	
-	public Personne(int id, String nom, String prenom, int age,int role) {
+	public Personne(Integer id, String nom, String prenom, Integer age,String role) {
 		this.id = id;
 		this.nom = nom;
 		this.prenom = prenom;
 		this.age = age;
 		this.role= role;
 	}
-	public Personne(int id, String nom, String prenom, int age) {
-		this.id = id;
-		this.nom = nom;
-		this.prenom = prenom;
-		this.age = age;
-		this.role= 0;
-	}
+ 
 	
 	public int getId() {
 		return id;
 	}
 	
-	public int getRole() {
+	public String getRole() {
 		return role;
 	}
 	
-	public void setRole(int role) {
+	public void setRole(String role) {
 		this.role=role;
 	}
 	
