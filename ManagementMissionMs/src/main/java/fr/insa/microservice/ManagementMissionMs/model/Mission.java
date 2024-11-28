@@ -1,5 +1,7 @@
 package fr.insa.microservice.ManagementMissionMs.model;
 
+import java.util.List;
+
 public class Mission {
 	private static final String [] States = {"En Attente", "Validée", "Réalisé"};
 	
@@ -7,7 +9,9 @@ public class Mission {
 	private int idDemandeur;
     private int idBenevole;
 	private String state;
-	private String comment;
+	private List<String> comment;
+	private String description;
+	
 	
 	public Mission() {
         this.state = States[0];
@@ -19,12 +23,13 @@ public class Mission {
 		StateInitiale();
 	}
 
-	public Mission(int idmission, int idDemandeur , int idBenevole,String state,String comment ) {
+	public Mission(int idmission, int idDemandeur , int idBenevole,String state,List<String> comment,String description ) {
 		this.idmission = idmission;
 		this.idDemandeur = idDemandeur;
         this.idBenevole=idBenevole;
 		this.comment=comment;
 		this.state=state;
+		this.description=description;
 	}
 	
 
@@ -46,6 +51,12 @@ public class Mission {
     public void setIdDemandeur(int idDemandeur) {
         this.idDemandeur = idDemandeur;
     }
+	public String getDescription() {
+		return description;
+	}
+	public void setDesciption (String description) {
+		this.description=description;
+	}
 	public String getState() {
 		return state;
 	}
@@ -61,10 +72,10 @@ public class Mission {
 	public void StateTermine() {
 		this.state = States[3];
 	}
-	public String getComment() {
+	public List<String> getComment() {
 		return comment;
 	}
-	public void setComment(String comment) {
+	public void setComment(List<String> comment) {
 		this.comment = comment;
 	}
 

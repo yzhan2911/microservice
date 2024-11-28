@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import fr.insa.microservice.ManagementMissionMs.model.AssignMissionRequest;
 import fr.insa.microservice.ManagementMissionMs.model.Mission;
 
 
@@ -30,7 +29,7 @@ public class MissionRessources {
 		return managementMissionSQL.getMissionById(id);
 	} 
 
-	//idMission et idDemandeur sont suffit
+	//idMission , idDemandeur et description sont suffit
     @PostMapping
 	public Mission addMission(@RequestBody Mission m) {
 		managementMissionSQL.addMission(m);
@@ -38,14 +37,13 @@ public class MissionRessources {
 	}
 
     @DeleteMapping(value = "/delete/{idMission}")
-	public void deletePersonne(@PathVariable int idMission) {
+	public void deleteMission(@PathVariable int idMission) {
         managementMissionSQL.deleteMission(idMission);
 	}
 
 
-    @PutMapping(value="assign/{idMission}")
-    public void assignMission(@PathVariable int idMission,@RequestBody AssignMissionRequest request) {//car on ne peux pas definit un requestBody par int primitive
-		int idBenevole = request.getIdBenevole();
+    @PutMapping(value="assign/{idMission}/{idBenevole}")
+    public void assignMission(@PathVariable int idMission,@PathVariable int idBenevole) {
         managementMissionSQL.assignMission(idMission,idBenevole);
 	}
 
