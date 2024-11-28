@@ -21,17 +21,6 @@ import fr.insa.microservice.ManagementPersonneMs.model.Valideur;
 @RequestMapping("/personnes")
 public class PersonneResource {
 	public PersonnesControllerSQL personneControlle= new PersonnesControllerSQL();
-	/*@Value("${server.port}")
-	private String serverPort;
-	@Value("${db.connection}")
-	private String connection;
-	@Value("${db.username}")
-	private String username;
-	
-	@GetMapping("/config")
-	public String getConfig() {
-		return "serverPort:"+serverPort+"\n"+"connection :"+connection+"\n"+"dbusername:"+username+"\n";
-	}*/
 	@GetMapping
 	public List<Personne> getAllPersonne() {
 		return personneControlle.getAllPersonnes();
