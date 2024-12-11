@@ -26,7 +26,15 @@ jobs:
         run: |
           cd MSFeedbackServeur  
           nohup mvn -f pom.xml spring-boot:run > server.log 2>&1 &
-      
+
+      - name: Wait for Server to Start
+        run: sleep 10
+
+      - name: Check Server Health
+        run: |
+          curl http://localhost:8080/actuator/health || echo "Server not reachable"
+
+        
       - name: Build with Maven
         run: mvn -f feedbackMs/pom.xml clean install
 
