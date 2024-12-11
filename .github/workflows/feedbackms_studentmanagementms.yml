@@ -25,7 +25,7 @@ jobs:
       - name: Start Server
         run: |
           cd MSFeedbackServeur  
-          nohup mvn -f pom.xml spring-boot:run > server.log 2>&1 &
+          nohup mvn -f MSFeedbackServeur/pom.xml spring-boot:run > server.log 2>&1 &
 
       - name: Wait and check server health
         run: |
