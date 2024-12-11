@@ -21,7 +21,10 @@ jobs:
         with:
           java-version: '17'
           distribution: 'microsoft'
-
+      - name: Start Main Server
+        run: |
+          cd MSFeedbackServer  
+          nohup mvn spring-boot:run > server.log 2>&1 &
       - name: Build with Maven
         run: mvn -f feedbackMs/pom.xml clean install
 
