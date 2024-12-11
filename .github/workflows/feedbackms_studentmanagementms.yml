@@ -27,14 +27,22 @@ jobs:
           cd MSFeedbackServeur  
           nohup mvn -f pom.xml spring-boot:run > server.log 2>&1 &
 
-      - name: Wait for Server to Start
-        run: sleep 10
-
-      - name: Check Server Health
+      - name: Wait and check server health
         run: |
-          curl http://localhost:8080/actuator/health || echo "Server not reachable"
+          MAX_RETRIES=10
+          RETRY_DELAY=10
+          for i in $(seq 1 $MAX_RETRIES); do
+            if curl -s http://localhost:8080/actuator/health; then
+              echo "Server is up and running"
+              exit 0
+            else
+              echo "Server not reachable, retrying in $RETRY_DELAY seconds..."
+              sleep $RETRY_DELAY
+            fi
+          done
+          echo "Server did not start after $MAX_RETRIES attempts"
+          exit 1
 
-        
       - name: Build with Maven
         run: mvn -f feedbackMs/pom.xml clean install
 
