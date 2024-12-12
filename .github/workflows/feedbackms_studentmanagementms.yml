@@ -30,6 +30,9 @@ jobs:
         run: |
           cd ConfigServer
           nohup mvn -f pom.xml spring-boot:run > config-server.log 2>&1 &
+      - name: Tail Config Server Logs
+        run: |
+          tail -f ConfigServer/config-server.log
       - name: Wait for Config Server
         run: |
           MAX_RETRIES=10
