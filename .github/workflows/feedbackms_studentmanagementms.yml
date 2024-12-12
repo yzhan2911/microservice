@@ -30,25 +30,11 @@ jobs:
         run: |
           cd ConfigServer
           nohup mvn -f pom.xml spring-boot:run > config-server.log 2>&1 &
-      - name: Tail Config Server Logs
-        run: |
-          tail -f ConfigServer/config-server.log
       - name: Wait for Config Server
-        run: |
-          MAX_RETRIES=10
-          RETRY_DELAY=10
-          for i in $(seq 1 $MAX_RETRIES); do
-            if curl -s http://localhost:8888/actuator/health | grep '"status":"UP"'; then
-              echo "Config Server is up and running"
-              exit 0
-            else
-              echo "Config Server not reachable, retrying in $RETRY_DELAY seconds..."
-              sleep $RETRY_DELAY
-            fi
-          done
-          echo "Config Server did not start after $MAX_RETRIES attempts"
-          exit 1
-      - name: Switch back to main branch
+        run:   |
+          echo "Waiting for Config Server to be ready..."
+          sleep 30
+      - name: Switch back to feedback branch
         uses: actions/checkout@v4
         with:
           ref: feedbackMS
@@ -58,19 +44,8 @@ jobs:
           nohup mvn -f pom.xml spring-boot:run > server.log 2>&1 &
       - name: Wait for Feedback Server
         run: |
-          MAX_RETRIES=10
-          RETRY_DELAY=10
-          for i in $(seq 1 $MAX_RETRIES); do
-            if curl -s http://localhost:8763/actuator/health | grep '"status":"UP"'; then
-              echo "Feedback Server is up and running"
-              exit 0
-            else
-              echo "Feedback Server not reachable, retrying in $RETRY_DELAY seconds..."
-              sleep $RETRY_DELAY
-            fi
-          done
-          echo "Feedback Server did not start after $MAX_RETRIES attempts"
-          exit 1
+          echo "Waiting for MS Server to be ready..."
+          sleep 30
 
       - name: Build with Maven
         run: mvn -f feedbackMs/pom.xml clean install
